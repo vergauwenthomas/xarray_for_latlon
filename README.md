@@ -5,7 +5,16 @@ Extension to xarray specific for features relying on lat lan coordinates
 
 ## Installation
 
-....
+For useage install it as a package:
+
+```shell
+
+pip install git+https://github.com/vergauwenthomas/xarray_for_latlon.git
+
+```
+
+If you want to contribute, clone the repo.
+
 
 ## Usage
 
