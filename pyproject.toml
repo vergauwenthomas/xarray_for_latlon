@@ -1,6 +1,6 @@
 [project]
 name = "xarray-for-latlon"
-version = "0.1.0"
+version = "0.0.1"
 description = "A small Python package for xarray lat/lon utilities"
 authors = [
     {name = "Thomas Vergauwen",email = "thomas.vergauwen@meteo.be"}
