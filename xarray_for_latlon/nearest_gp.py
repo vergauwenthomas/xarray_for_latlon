@@ -16,10 +16,48 @@ def sel_nearest_latlon(xrobj: Dataset | DataArray,
                        spatial_lat_name: str = 'lat', #Needed because haversine needs lat first pairs!
                        spatial_lon_name: str = 'lon', #Needed because haversine needs lat first pairs!
                        **selkwargs):
-    
-    #Test indexers compatibility
-    
+    """
+    Select the nearest grid point in an xarray Dataset or DataArray to a given latitude and longitude.
 
+    Uses a BallTree for efficient nearest-neighbor search, supporting both haversine (great-circle) and other metrics.
+
+    Parameters
+    ----------
+    xrobj : xarray.Dataset or xarray.DataArray
+        The input xarray object containing spatial coordinates.
+    indexers_equivalent : dict
+        Dictionary with target latitude and longitude, e.g. {'lat': value, 'lon': value}.
+        The keys must match `spatial_lat_name` and `spatial_lon_name`.
+    metric : str, default 'haversine'
+        Distance metric to use for BallTree. Use 'haversine' for spherical coordinates (degrees).
+    balltree_leaf_size : int, default 40
+        Leaf size for BallTree construction.
+    spatial_x_dim : str, default 'x'
+        Name of the x (horizontal) dimension in the dataset.
+    spatial_y_dim : str, default 'y'
+        Name of the y (vertical) dimension in the dataset.
+    spatial_lat_name : str, default 'lat'
+        Name of the latitude coordinate.
+    spatial_lon_name : str, default 'lon'
+        Name of the longitude coordinate.
+    **selkwargs
+        Additional keyword arguments passed to xarray's `.sel()`.
+
+    Returns
+    -------
+    xarray.Dataset or xarray.DataArray
+        The selected nearest grid point as a Dataset or DataArray (same type as input).
+
+    Raises
+    ------
+    ValueError
+        If required coordinates or dimensions are missing, or if indexers are not compatible.
+
+    Notes
+    -----
+    - The function assumes latitude and longitude are in degrees when using the 'haversine' metric.
+    """
+    
     for coordname in indexers_equivalent.keys():
         if coordname not in [spatial_lat_name, spatial_lon_name]:
             raise ValueError(f'{coordname} is not a in spatial_lat_name, or spatial_lon_name: [{spatial_lat_name}, {spatial_lon_name}]')
